@@ -1,5 +1,5 @@
 {
-    "name": "lison/base",
+    "name": "lison/php.base",
     "description": "Utility function",
     "type": "library",
     "license": "proprietary",
