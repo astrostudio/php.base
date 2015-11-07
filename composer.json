@@ -6,6 +6,11 @@
     "require": {
         "composer/installers": "*"
     },
+    "autoload": {
+        "psr-4": {
+            "Base\\": "."
+        }
+    },    
     "extra": {
         "installer-name": "Base"
     }

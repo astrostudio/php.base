@@ -1,6 +1,8 @@
 <?php
-require_once('IBaseBuilder.php');
-require_once('IBaseFactory.php');
+namespace Base;
+
+use Base\IBaseBuilder;
+use Base\IBaseFactory;
 
 class BaseBuilder implements IBaseBuilder {
     

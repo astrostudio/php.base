@@ -1,4 +1,6 @@
 <?php
+namespace Base;
+
 class Base {
 
     static public function push(&$array,$item){

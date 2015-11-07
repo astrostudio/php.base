@@ -1,4 +1,6 @@
 <?php
+namespace Base;
+
 class BaseTime {
 
     const TF_DATABASE='Y-m-d H:i:s';
