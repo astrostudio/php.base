@@ -12,6 +12,6 @@
         }
     },    
     "extra": {
-        "installer-name": "Base"
+        "installer-name": "php.base"
     }
 }
