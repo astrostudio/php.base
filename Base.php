@@ -164,5 +164,8 @@ class Base {
         return($items);
     }
 
+    static public function in($value,array $list=[]){
+        return(array_search($value,$list)!==false);
+    }
 
 }
