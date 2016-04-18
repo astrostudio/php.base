@@ -34,7 +34,7 @@ class Base {
         $args=func_get_args();
         
         foreach($args as $arg){
-            if(!empty($arg)){
+            if(isset($arg)){
                 return($arg);
             }
         }
