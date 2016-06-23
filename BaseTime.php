@@ -100,38 +100,32 @@ class BaseTime {
     static public function period($name,DateTime $time=null){
         $time=!empty($time)?$time:new DateTime();
 
-        if($name==self::PN_THIS_YEAR){
-            return(array('start'=>self::yearStart($time),'stop'=>self::yearStop($time),'step'=>new DateInterval('P1M')));
-        }
-
-        if($name==self::PN_THIS_MONTH){
-            return(array('start'=>self::monthStart($time),'stop'=>self::monthStop($time),'step'=>new DateInterval('P7D')));
-        }
-
-        if($name==self::PN_THIS_WEEK){
-            return(array('start'=>self::weekStart($time),'stop'=>self::weekStop($time),'step'=>new DateInterval('P1D')));
+        switch($name){
+            case self::PN_THIS_YEAR:
+                return(array('start'=>self::yearStart($time),'stop'=>self::yearStop($time),'step'=>new DateInterval('P1M')));
+            case self::PN_THIS_MONTH:
+                return(array('start'=>self::monthStart($time),'stop'=>self::monthStop($time),'step'=>new DateInterval('P7D')));
+            case self::PN_THIS_WEEK:
+                return(array('start'=>self::weekStart($time),'stop'=>self::weekStop($time),'step'=>new DateInterval('P1D')));
+            case self::PN_LAST_YEAR:
+                $time1=clone $time;
+                $time1->sub(new DateInterval('P1Y'));
+            
+                return(array('start'=>$time1,'stop'=>$time,'step'=>new DateInterval('P1M')));
+            case self::PN_LAST_MONTH:
+                $time1=clone $time;
+                $time1->sub(new DateInterval('P1M'));
+            
+                return(array('start'=>$time1,'stop'=>$time,'step'=>new DateInterval('P7D')));
+            case self::PN_LAST_WEEK:
+                $time1=clone $time;
+                $time1->sub(new DateInterval('P7D'));
+            
+                return(array('start'=>$time1,'stop'=>$time,'step'=>new DateInterval('P1D')));
         }
 
         $time1=clone $time;
-        
-        if($name==self::PN_LAST_YEAR){
-            $time1->sub(new DateInterval('P1Y'));
-            
-            return(array('start'=>$time1,'stop'=>$time,'step'=>new DateInterval('P1M')));
-        }
 
-        if($name==self::PN_LAST_MONTH){
-            $time1->sub(new DateInterval('P1M'));
-            
-            return(array('start'=>$time1,'stop'=>$time,'step'=>new DateInterval('P7D')));
-        }
-
-        if($name==self::PN_LAST_WEEK){
-            $time1->sub(new DateInterval('P7D'));
-            
-            return(array('start'=>$time1,'stop'=>$time,'step'=>new DateInterval('P1D')));
-        }
-        
         return(array('start'=>$time1,'stop'=>$time,'step'=>new DateInterval('P1D')));
     }
     
@@ -157,7 +151,9 @@ class BaseTime {
         
         return($time);
     }
-    
-    
-    
+
+    static public function seconds(DateInterval $interval){
+        return($interval->d * 3600 * 24 + $interval->h * 3600 + $interval->i * 60 + $interval->s);
+    }
+
 }

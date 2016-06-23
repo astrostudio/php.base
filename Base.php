@@ -113,5 +113,16 @@ class Base {
 
         return($value);        
     }
-    
+
+    static public function evaluate($var,array $params=[],$default=null){
+        if(!isset($var)){
+            return($default);
+        }
+
+        if(is_callable($var)){
+            return(call_user_func_array($var,$params));
+        }
+
+        return($var);
+    }
 }
