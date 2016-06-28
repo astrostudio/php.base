@@ -21,7 +21,7 @@ class BaseTime {
         'H:i:s',
         'H:i'
     );
-    
+
     static public function recognize($string,$formats=null){
         $formats=is_array($formats)?$formats:self::$__recognizes;
         
