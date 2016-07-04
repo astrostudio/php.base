@@ -11,6 +11,22 @@ class BaseTime {
     const PN_LAST_MONTH='last-month';
     const PN_LAST_WEEK='last-week';
 
+    const TP_THIS_YEAR='this-year';
+    const TP_THIS_MONTH='this-month';
+    const TP_THIS_WEEK='this-week';
+    const TP_LAST_YEAR='last-year';
+    const TP_LAST_MONTH='last-month';
+    const TP_LAST_WEEK='last-week';
+    const TP_ALL_THE_TIME='all-the-time';
+
+    const TR_SECOND='second';
+    const TR_MINUTE='minute';
+    const TR_HOUR='hour';
+    const TR_DAY='day';
+    const TR_WEEK='week';
+    const TR_MONTH='month';
+    const TR_YEAR='year';
+
     static private $__recognizes=array(
         'Y-m-d H:i:s',
         'd-m-Y H:i:s',
@@ -19,8 +35,30 @@ class BaseTime {
         'Y-m-d',
         'd-m-Y',
         'H:i:s',
-        'H:i'
+        'H:i',
+        'Y-m',
+        'Y'
     );
+
+    static private $__ranges=[
+        self::TR_SECOND=>['datetime'=>'Y-m-d H:i:s','database'=>'%Y-%m-%d %H:%i:%s','interval'=>'PT1S','dbfunc'=>'SECOND'],
+        self::TR_MINUTE=>['datetime'=>'Y-m-d H:i','database'=>'%Y-%m-%d %H:%i','interval'=>'PT1M','dbfunc'=>'MINUTE'],
+        self::TR_HOUR=>['datetime'=>'Y-m-d H','database'=>'%Y-%m-%d %H','interval'=>'PT1H','dbfunc'=>'HOUR'],
+        self::TR_DAY=>['datetime'=>'Y-m-d','database'=>'%Y-%m-%d','interval'=>'P1D','dbfunc'=>'DAY'],
+        self::TR_WEEK=>['datetime'=>'Y-W','database'=>'%Y-%u','interval'=>'P7D','dbfunc'=>'WEEK'],
+        self::TR_MONTH=>['datetime'=>'Y-m','database'=>'%Y-%m','interval'=>'P1M','dbfunc'=>'MONTH'],
+        self::TR_YEAR=>['datetime'=>'Y','database'=>'%Y','interval'=>'P1Y','dbfunc'=>'YEAR']
+    ];
+
+    static private $__periods=[
+        self::TP_THIS_YEAR=>['range'=>self::TR_MONTH],
+        self::TP_THIS_MONTH=>['range'=>self::TR_WEEK],
+        self::TP_THIS_WEEK=>['range'=>self::TR_DAY],
+        self::TP_LAST_YEAR=>['range'=>self::TR_MONTH],
+        self::TP_LAST_MONTH=>['range'=>self::TR_WEEK],
+        self::TP_LAST_WEEK=>['range'=>self::TR_DAY],
+        self::TP_ALL_THE_TIME=>['range'=>self::TR_YEAR]
+    ];
 
     static public function recognize($string,$formats=null){
         $formats=is_array($formats)?$formats:self::$__recognizes;
@@ -122,6 +160,11 @@ class BaseTime {
                 $time1->sub(new DateInterval('P7D'));
             
                 return(array('start'=>$time1,'stop'=>$time,'step'=>new DateInterval('P1D')));
+            case self::TP_ALL_THE_TIME:
+                $time1=clone $time;
+                $time1->sub(new DateInterval('P10Y'));
+
+                return(array('start'=>$time1,'stop'=>$time,'step'=>new DateInterval('P1Y')));
         }
 
         $time1=clone $time;
@@ -156,4 +199,19 @@ class BaseTime {
         return($interval->d * 3600 * 24 + $interval->h * 3600 + $interval->i * 60 + $interval->s);
     }
 
+    static public function range($range,$name){
+        if(empty(self::$__ranges[$range])){
+            return(false);
+        }
+
+        if(empty(self::$__ranges[$range][$name])){
+            return(false);
+        }
+
+        return(self::$__ranges[$range][$name]);
+    }
+
+    static public function periodRange($period){
+        return(self::$__periods[$period]['range']);
+    }
 }

@@ -6,12 +6,12 @@ class BaseBuilder implements IBaseBuilder {
     
     static private $__builders=array();
 
-    static public function getBuilder($name){
-        if(!isset(self::$__builder[$name])){
+    static public function getBuilder($name){;
+        if(!isset(self::$__builders[$name])){
             return(null);
         }
         
-        return(self::$__builder[$name]);
+        return(self::$__builders[$name]);
     }
     
     static public function setBuilder($name,IBaseBuilder $builder){
@@ -27,11 +27,15 @@ class BaseBuilder implements IBaseBuilder {
     
     public function __construct($factories=array()){
         $this->__factories=array();
+
+        foreach($factories as $name=>$factory){
+            $this->setFactory($name,$factory);
+        }
     }
     
     public function get($name,$options=array()){
         $factory=$this->getFactory($name);
-        
+
         if(!$factory){
             return(null);
         }
