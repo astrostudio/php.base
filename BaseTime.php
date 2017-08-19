@@ -2,6 +2,8 @@
 namespace Base;
 
 use DateTime;
+use DateInterval;
+use DateTimeInterface;
 
 class BaseTime {
 
@@ -15,7 +17,7 @@ class BaseTime {
     const PN_LAST_MONTH='last-month';
     const PN_LAST_WEEK='last-week';
 
-    static private $__recognizes=array(
+    static private $__formats=array(
         'Y-m-d H:i:s',
         'd-m-Y H:i:s',
         'Y-m-d H:i',
@@ -25,17 +27,49 @@ class BaseTime {
         'H:i:s',
         'H:i'
     );
-    
-    static public function recognize($string,$formats=null){
-        $formats=is_array($formats)?$formats:self::$__recognizes;
-        
-        if(!empty($string)){
-            foreach($formats as $format){
-                $time=DateTime::createFromFormat($format,$string);
-                
-                if($time){
-                    return($time);
-                }
+
+    static public function extract($time,$default=null,$format=null){
+        if(!$time){
+            return(self::extract($default));
+        }
+
+        if($time instanceof DateTime){
+            return($time);
+        }
+
+        if(is_string($time)){
+            $time=self::recognize($time,$format);
+
+            return($time);
+        }
+
+        if(is_int($time)){
+            return((new DateTime())->setTimestamp($time));
+        }
+
+        return(null);
+    }
+
+    static public function recognize($string,$format=null){
+        if(empty($string)){
+            return(false);
+        }
+
+        if(!isset($format)){
+            $format=self::$__formats;
+        }
+        else if(is_string($format)){
+            return(DateTime::createFromFormat($format,$string));
+        }
+        else if(!is_array($format)){
+            return(null);
+        }
+
+        foreach($format as $f){
+            $time=DateTime::createFromFormat($f,$string);
+
+            if($time){
+                return($time);
             }
         }
         
@@ -161,7 +195,12 @@ class BaseTime {
         
         return($time);
     }
-    
-    
-    
+
+    static public function compare(DateTimeInterface $time1,DateTimeInterface $time2,$format='Y-m-d H:i:s'){
+        $time1=$time1->format($format);
+        $time2=$time2->format($format);
+
+        return(strcmp($time1,$time2));
+    }
+
 }
