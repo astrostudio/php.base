@@ -30,7 +30,11 @@ class BaseTime {
 
     static public function extract($time,$default=null,$format=null){
         if(!$time){
-            return(self::extract($default));
+            if(isset($default)) {
+                return (self::extract($default));
+            }
+
+            return($default);
         }
 
         if($time instanceof DateTime){
@@ -173,9 +177,9 @@ class BaseTime {
         return(array('start'=>$time1,'stop'=>$time,'step'=>new DateInterval('P1D')));
     }
     
-    static public function age(DateTime $time=null){
+    static public function age(DateTimeInterface $time=null,DateTimeInterface $now=null){
         if(!empty($time)){
-            $now=new DateTime();
+            $now=$now?$now:new DateTime();
         
             return($now->format('Y')-$time->format('Y'));
         }
