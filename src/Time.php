@@ -5,7 +5,7 @@ use DateTime;
 use DateInterval;
 use DateTimeInterface;
 
-class BaseTime {
+class Time {
 
     const TF_DATABASE='Y-m-d H:i:s';
     const TF_DATE_DATABASE='Y-m-d';
@@ -94,31 +94,31 @@ class BaseTime {
         return($default);        
     }
     
-    static public function yearStart(DateTime $time=null){
+    static public function yearStart(DateTimeInterface $time=null){
         $time=!empty($time)?$time:new DateTime();
         
         return(DateTime::createFromFormat('Y-m-d H:i:s',$time->format('Y').'-01-01 00:00:00'));
     }
     
-    static public function yearStop(DateTime $time=null){
+    static public function yearStop(DateTimeInterface $time=null){
         $time=!empty($time)?$time:new DateTime();
         
         return(DateTime::createFromFormat('Y-m-d H:i:s',$time->format('Y').'-12-31 23:59:59'));
     }
 
-    static public function monthStart(DateTime $time=null){
+    static public function monthStart(DateTimeInterface $time=null){
         $time=!empty($time)?$time:new DateTime();
         
         return(DateTime::createFromFormat('Y-m-d H:i:s',$time->format('Y-m').'-01 00:00:00'));        
     }
 
-    static public function monthStop(DateTime $time=null){
+    static public function monthStop(DateTimeInterface $time=null){
         $time=!empty($time)?$time:new DateTime();
         
         return(DateTime::createFromFormat('Y-m-d H:i:s',$time->format('Y-m-t').' 23:59:59'));
     }
 
-    static public function weekStart(DateTime $time=null){
+    static public function weekStart(DateTimeInterface $time=null){
         $time=!empty($time)?$time:new DateTime();
         $wdate=clone $time;
         $wdate=DateTime::createFromFormat('Y-m-d',$wdate->format('Y-m-d'));
@@ -132,14 +132,14 @@ class BaseTime {
         return($wdate);
     }
     
-    static public function weekStop(DateTime $time=null){
+    static public function weekStop(DateTimeInterface $time=null){
         $start=self::weekStart($time);
         $start->add(new DateInterval('P7D'));
         
         return($start);
     }
 
-    static public function period($name,DateTime $time=null){
+    static public function period($name,DateTimeInterface $time=null){
         $time=!empty($time)?$time:new DateTime();
 
         if($name==self::PN_THIS_YEAR){
@@ -187,7 +187,7 @@ class BaseTime {
         return(null);
     }
     
-    static public function middle(DateTime $start=null,DateTime $stop=null){
+    static public function middle(DateTimeInterface $start=null,DateTimeInterface $stop=null){
         $start=!empty($start)?$start:new DateTime();
         $stop=!empty($stop)?$stop:new DateTime();
         $istart=$start->getTimestamp();

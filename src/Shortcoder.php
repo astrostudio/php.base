@@ -1,9 +1,7 @@
 <?php
 namespace Base;
 
-use Base\IBaseProcessor;
-
-class BaseShortcoder implements IBaseProcessor {
+class Shortcoder {
 
     private $__shortcodes=[];
 
@@ -13,7 +11,7 @@ class BaseShortcoder implements IBaseProcessor {
         }
     }
 
-    public function process(array $options=[],$body=null){
+    public function process($body=null,array $options=[]){
         $i=0;
         $items=$this->__parse($body,$i,mb_strlen($body));
 
@@ -31,7 +29,7 @@ class BaseShortcoder implements IBaseProcessor {
             return;
         }
 
-        if(($shortcode instanceof IBaseProcessor) or is_callable($shortcode) or is_string($shortcode)){
+        if(($shortcode instanceof Shortcoder) or is_callable($shortcode) or is_string($shortcode)){
             $this->__shortcodes[$name]=$shortcode;
         }
     }
@@ -52,8 +50,8 @@ class BaseShortcoder implements IBaseProcessor {
                         $content='';
                     }
 
-                    if($this->__shortcodes[$item['name']] instanceof IBaseProcessor){
-                        $s.=$this->__shortcodes[$item['name']]->process($items['attributes'],$content);
+                    if($this->__shortcodes[$item['name']] instanceof Shortcoder){
+                        $s.=$this->__shortcodes[$item['name']]->process($content,$items['attributes']);
                     }
                     else if(is_callable($this->__shortcodes[$item['name']])){
                         $s.=call_user_func($this->__shortcodes[$item['name']],$item['attributes'],$content);
