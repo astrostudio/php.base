@@ -9,17 +9,7 @@ class LayerClassifier implements IClassifier {
         $this->setClassifier($classifiers);
     }
 
-    public function is($subClassifier,$classifier=null){
-        if(!isset($classifier)){
-            $classifiers=[];
-
-            foreach($this->__classifiers as $classifier){
-                $classifiers=array_merge($classifiers,$classifier->is($subClassifier));
-            }
-
-            return($classifiers);
-        }
-
+    public function is($subClassifier,$classifier){
         if(is_string($classifier)){
             $classifier=[$classifier];
         }
@@ -43,11 +33,21 @@ class LayerClassifier implements IClassifier {
         return(true);
     }
 
-    public function get($classifier=null){
+    public function get($subClassifier){
+        $classifiers=[];
+
+        foreach($this->__classifiers as $classifier){
+            $classifiers=array_merge($classifiers,$classifier->get($subClassifier));
+        }
+
+        return($classifiers);
+    }
+
+    public function has($classifier=null){
         $classifiers=[];
 
         foreach($this->__classifiers as $c){
-            $classifiers=array_merge($classifiers,$c->get($classifier));
+            $classifiers=array_merge($classifiers,$c->has($classifier));
         }
 
         return($classifiers);

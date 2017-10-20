@@ -74,15 +74,7 @@ class LinkClassifier implements IClassifier {
         return(true);
     }
 
-    public function is($subClassifier,$classifier=null){
-        if(!isset($classifier)){
-            if(!isset($this->__classifier[$subClassifier])){
-                return([]);
-            }
-
-            return(array_keys($this->__classifier[$subClassifier]['pred']));
-        }
-
+    public function is($subClassifier,$classifier){
         if(!isset($this->__classifier[$subClassifier])){
             return(false);
         }
@@ -108,7 +100,15 @@ class LinkClassifier implements IClassifier {
         return(false);
     }
 
-    public function get($classifier=null){
+    public function get($subClassifier){
+        if(!isset($this->__classifier[$subClassifier])){
+            return([]);
+        }
+
+        return(array_keys($this->__classifier[$subClassifier]['pred']));
+    }
+
+    public function has($classifier=null){
         if(!isset($classifier)){
             return(array_keys($this->__classifier));
         }

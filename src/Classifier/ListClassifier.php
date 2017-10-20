@@ -11,26 +11,7 @@ class ListClassifier implements IClassifier {
         $this->__item=[];
     }
 
-    public function is($subClassifier,$classifier=null){
-        if(!isset($classifier)){
-            if(!$this->__classifier){
-                return([]);
-            }
-
-            if(!isset($this->__item[$subClassifier])){
-                return([]);
-            }
-
-            $classifiers=[];
-
-            foreach($this->__item[$subClassifier] as $c){
-                $classifiers[]=$c;
-                $classifiers=array_merge($classifiers,$this->__classifier->is($c));
-            }
-
-            return($classifiers);
-        }
-
+    public function is($subClassifier,$classifier){
         if(!$this->__classifier){
             return(false);
         }
@@ -48,7 +29,26 @@ class ListClassifier implements IClassifier {
         return(false);
     }
 
-    public function get($classifier=null){
+    public function get($subClassifier){
+        if(!$this->__classifier){
+            return([]);
+        }
+
+        if(!isset($this->__item[$subClassifier])){
+            return([]);
+        }
+
+        $classifiers=[];
+
+        foreach($this->__item[$subClassifier] as $c){
+            $classifiers[]=$c;
+            $classifiers=array_merge($classifiers,$this->__classifier->get($c));
+        }
+
+        return($classifiers);
+    }
+
+    public function has($classifier=null){
         if(!isset($classifier)){
             return(array_keys($this->__item));
         }
