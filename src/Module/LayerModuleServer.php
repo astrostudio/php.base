@@ -5,7 +5,7 @@ use Exception;
 
 class LayerModuleServer implements IModuleServer {
 
-    private $__servers=null;
+    private $__servers=[];
 
     public function __construct(array $servers=[]){
         $this->setServer($servers);
@@ -39,6 +39,10 @@ class LayerModuleServer implements IModuleServer {
         }
 
         return(null);
+    }
+
+    public function servers(){
+        return(array_keys($this->__servers));
     }
 
     public function getServer($name){

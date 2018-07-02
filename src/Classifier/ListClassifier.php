@@ -54,19 +54,18 @@ class ListClassifier implements IClassifier {
         }
 
         $classifier=is_string($classifier)?[$classifier]:$classifier;
-
-        $factories=[];
+        $items=[];
 
         foreach($this->__item as $name=>$c){
             if(count(array_intersect($c,$classifier))){
-                $factories[]=$name;
+                $items[]=$name;
             }
             else  if($this->is($name,$classifier)){
-                $factories[]=$name;
+                $items[]=$name;
             }
         }
 
-        return($factories);
+        return($items);
     }
 
     public function set($name,$classifier=null){

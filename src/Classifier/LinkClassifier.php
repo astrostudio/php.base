@@ -113,22 +113,40 @@ class LinkClassifier implements IClassifier {
             return(array_keys($this->__classifier));
         }
 
-        if(!isset($this->__classifier[$classifier])){
-            return([]);
+        if(is_string($classifier)) {
+            if (!isset($this->__classifier[$classifier])) {
+                return ([]);
+            }
+
+            return(array_keys($this->__classifier[$classifier]['succ']));
         }
 
-        return(array_keys($this->__classifier[$classifier]['succ']));
+        if(is_array($classifier)){
+            if(empty($classifier)){
+                return(array_keys($this->__classifier));
+            }
+
+            $c=array_shift($classifier);
+            $classifiers=$this->has($c);
+
+            foreach($classifier as $c){
+                $classifiers=array_intersect($classifier,$this->has($c));
+            }
+
+            return($classifiers);
+        }
+
+        return([]);
     }
 
     public function set($subClassifier,$classifier=null) {
         if(isset($classifier)) {
+            $this->__insert($subClassifier);
+
             if (is_string($classifier)) {
                 $this->__extend($classifier, $subClassifier);
             }
-
-            if (is_array($classifier)) {
-                $this->__insert($subClassifier);
-
+            else  if (is_array($classifier)) {
                 foreach ($classifier as $c) {
                     $this->__extend($c,$subClassifier);
                 }
