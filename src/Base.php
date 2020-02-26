@@ -1,7 +1,7 @@
 <?php
 namespace Base;
 
-use \Exception;
+use Exception;
 
 class Base {
 
@@ -26,39 +26,39 @@ class Base {
 				}
 			}
 		}
-        
+
 		return($return);
 	}
-    
+
     static public function def(){
         $args=func_get_args();
-        
+
         foreach($args as $arg){
             if(isset($arg)){
                 return($arg);
             }
         }
-        
+
         return(null);
     }
-    
+
     static public function get($data=null,$path=null,$value=null){
         if(!is_array($data)){
             if(empty($path)){
                 return($data);
             }
-            
+
             return($value);
         }
-        
+
         if(is_string($path)){
             $path=explode('.',$path);
         }
-        
+
         if(!is_array($path)){
             return($value);
         }
-        
+
         foreach($path as $item){
             if(is_array($data) and isset($data[$item])){
                 $data=$data[$item];
@@ -66,38 +66,38 @@ class Base {
             else {
                 return($value);
             }
-            
+
         }
-        
+
         return($data);
     }
-    
+
     static public function set(&$data,$path=null,$value=null){
         if(!is_array($data)){
             if(empty($path)){
                 if(!isset($value)){
                     unset($data);
                 }
-                else {                
+                else {
                     $data=$value;
                 }
-                
+
                 return($value);
             }
-            
+
             return(false);
         }
-        
+
         if(is_string($path)){
             $path=explode('.',$path);
         }
-        
+
         if(!is_array($path)){
             return(false);
         }
-        
+
         $var=null;
-        
+
         foreach($path as $item){
             if(is_array($data) and isset($data[$item])){
                 $var=&$data[$item];
@@ -105,20 +105,20 @@ class Base {
             else {
                 return(false);
             }
-            
+
         }
-        
+
         if(!isset($value)){
             unset($var);
         }
-        else {                
+        else {
             $var=$value;
         }
 
-        return($value);        
+        return($value);
     }
 
-    static public function evaluate($var,$params=[],$default=null){
+    static public function evaluate($var,array $params=[],$default=null){
         if(!isset($var)){
             return($default);
         }
@@ -133,7 +133,6 @@ class Base {
     static public function sequence($items=[],$options=[]){
         foreach($items as $name=>&$item){
             $process=self::evaluate(self::get($options,'before'),[$name,$item],true);
-            $break=false;
             $result=null;
 
             if($process){
@@ -168,4 +167,29 @@ class Base {
         return(array_search($value,$list)!==false);
     }
 
+    static public function leave(array $data=[],array $keys=[]){
+        $result=[];
+
+        foreach($keys as $key){
+            if(array_key_exists($key,$data)){
+                $result[$key]=$data[$key];
+            }
+        }
+
+        return($result);
+    }
+
+    static public function remove(array &$input,array $keys=[]){
+        foreach($keys as $key){
+            unset($input[$key]);
+        }
+    }
+
+    static public function insert(array $input,$name,$item,int $offset=null):array
+    {
+        $count=count($input);
+        $offset=$offset??$count;
+
+        return(array_slice($input,0,$offset,true)+[$name=>$item]+array_slice($input,$offset,$count));
+    }
 }
