@@ -179,10 +179,12 @@ class Base {
         return($result);
     }
 
-    static public function remove(array &$input,array $keys=[]){
+    static public function remove(array $input,array $keys=[]){
         foreach($keys as $key){
             unset($input[$key]);
         }
+
+        return($input);
     }
 
     static public function insert(array $input,$name,$item,int $offset=null):array
