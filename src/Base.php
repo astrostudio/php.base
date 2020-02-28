@@ -194,4 +194,41 @@ class Base {
 
         return(array_slice($input,0,$offset,true)+[$name=>$item]+array_slice($input,$offset,$count));
     }
+
+    static public function order(array $keys=[],int $from=0):array{
+        $list=[];
+
+        foreach($keys as $key=>$value){
+            if(is_int($key)){
+                $list[$value]=++$from;
+            }
+            else {
+                $list[$key]=$value;
+            }
+        }
+
+        return($list);
+    }
+
+    static public function sort(array &$input=[],array $order=[],int $value=null){
+        return(usort($input,function($x1,$x2) use ($order,$value){
+            $v1=isset($order[$x1])?$order[$x1]:$value;
+            $v2=isset($order[$x2])?$order[$x2]:$value;
+
+            if(!isset($v1)){
+                if(!isset($v2)){
+                    return(0);
+                }
+
+                return(1);
+            }
+
+            if(!isset($v2)){
+                return(-1);
+            }
+
+            return($v1<=>$v2);
+        }));
+    }
+
 }
