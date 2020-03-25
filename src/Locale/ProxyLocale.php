@@ -9,6 +9,11 @@ class ProxyLocale extends BaseLocale
         $this->_locale=$locale;
     }
 
+    public function has(string $alias):bool
+    {
+        return($this->_locale?$this->_locale->has($alias):false);
+    }
+
     public function get(string $alias):string
     {
         return($this->_locale?$this->_locale->get($alias):$alias);

@@ -28,4 +28,30 @@ abstract class BaseLocale implements  LocaleInterface
 
         return($localeProfile);
     }
+
+    public function translateList(array $list=[]):array
+    {
+        $translations=[];
+
+        foreach($list as $alias){
+            $translations[$alias]=$this->get($alias);
+        }
+
+        return($translations);
+    }
+
+    public function translateKey(array $list=[],bool $recursive=false):array
+    {
+        $translations=[];
+
+        foreach($list as $key=>$value){
+            if(is_array($value) and $recursive){
+                $value=$this->translateKey($value);
+            }
+
+            $translations[$this->get($key)]=$value;
+        }
+
+        return($translations);
+    }
 }

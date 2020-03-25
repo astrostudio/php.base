@@ -28,4 +28,30 @@ abstract class BaseLocaleServer implements LocaleServerInterface
 
         return($localeProfile);
     }
+
+    public function translateList(string $locale,array $list=[]):array
+    {
+        $translations=[];
+
+        foreach($list as $alias){
+            $translations[$alias] = $this->translate($locale, $alias);
+        }
+
+        return($translations);
+    }
+
+    public function translateKey(string $locale, array $list=[],bool $recursive=false):array
+    {
+        $translations=[];
+
+        foreach($list as $key=>$value){
+            if(is_array($value) and $recursive){
+                $value=$this->translateKey($locale,$value);
+            }
+
+            $translations[$this->translate($locale,$key)]=$value;
+        }
+
+        return($translations);
+    }
 }

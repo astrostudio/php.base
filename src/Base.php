@@ -195,6 +195,39 @@ class Base {
         return(array_slice($input,0,$offset,true)+[$name=>$item]+array_slice($input,$offset,$count));
     }
 
+    static public function cut(array $input=[],int $count=1):array
+    {
+        $rows=ceil(count($input)/$count);
+        $chunks=array_chunk($input,$rows,true);
+        $keys=[];
+        $cuts=[];
+        $c=count($chunks);
+
+        for($i=0;$i<$c;++$i){
+            $keys[$i]=array_keys($chunks[$i]);
+        }
+
+        $finish=false;
+        $j=0;
+
+        while(!$finish) {
+            $finish=true;
+            $cut[$j]=[];
+
+            for ($i = 0; $i < $count; ++$i) {
+                if(!empty($keys[$i])){
+                    $key=array_shift($keys[$i]);
+                    $cuts[$j][$key]=$chunks[$i][$key];
+                    $finish=false;
+                }
+            }
+
+            ++$j;
+        }
+
+        return($cuts);
+    }
+
     static public function order(array $keys=[],int $from=0):array{
         $list=[];
 

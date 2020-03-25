@@ -22,6 +22,11 @@ class BasicLocale extends BaseLocale
         $this->_locale=$locale;
     }
 
+    public function has(string $alias):bool
+    {
+        return($this->_server->get($this->getLocale(),$alias)?true:false);
+    }
+
     public function get(string $alias):string
     {
         return($this->_server->translate($this->getLocale(),$alias));
