@@ -9,6 +9,11 @@ class ProxyApi extends BaseApi
         $this->_api=$api;
     }
 
+    public function actions():array
+    {
+        return($this->_api?$this->_api->actions():[]);
+    }
+
     public function has(string $action):bool
     {
         return($this->_api?$this->_api->has($action):false);

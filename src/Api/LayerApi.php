@@ -1,7 +1,7 @@
 <?php
 namespace Base\Api;
 
-use Base\Layer;
+use Base\Base;
 
 class LayerApi extends BaseApi
 {
@@ -10,6 +10,17 @@ class LayerApi extends BaseApi
 
     public function __construct(array $apis=[]){
         $this->setApi($apis);
+    }
+
+    public function actions():array
+    {
+        $actions=[];
+
+        foreach($this->_apis as $api){
+            $actions=Base::extend($actions,$api->actions());
+        }
+
+        return($actions);
     }
 
     public function has(string $action):bool
@@ -45,7 +56,7 @@ class LayerApi extends BaseApi
         unset($this->_apis[$name]);
 
         if($api){
-            $this->_apis=Layer::insert($this->_apis,$name,$api,$offset);
+            $this->_apis=Base::insert($this->_apis,$name,$api,$offset);
         }
     }
 }

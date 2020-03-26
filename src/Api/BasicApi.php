@@ -9,6 +9,11 @@ class BasicApi extends BaseApi
         $this->setAction($actions);
     }
 
+    public function actions():array
+    {
+        return(array_keys($this->_actions));
+    }
+
     public function has(string $action):bool
     {
         return(isset($this->actions[$action]));
