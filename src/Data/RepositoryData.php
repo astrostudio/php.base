@@ -1,10 +1,9 @@
 <?php
 namespace Base\Data;
 
-use Base\Data;
 use Base\Repository\RepositoryInterface;
 
-class RepositoryData extends Data
+class RepositoryData extends BaseData
 {
     protected $_repository;
     protected $_id;
@@ -14,7 +13,7 @@ class RepositoryData extends Data
         $this->_id=$id;
     }
 
-    public function exsists():bool
+    public function exists():bool
     {
         return($this->_repository->has($this->_id));
     }

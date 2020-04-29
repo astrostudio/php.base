@@ -1,7 +1,7 @@
 <?php
 namespace Base\Api;
 
-use Base\Layer;
+use Base\Base;
 
 class LayerApi extends BaseApi
 {
@@ -45,7 +45,7 @@ class LayerApi extends BaseApi
         unset($this->_apis[$name]);
 
         if($api){
-            $this->_apis=Layer::insert($this->_apis,$name,$api,$offset);
+            $this->_apis=Base::insert($this->_apis,$name,$api,$offset);
         }
     }
 }

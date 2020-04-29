@@ -54,7 +54,7 @@ class LayerRepository extends BaseRepository
     }
 
     public function set(string $id,$data=null,array $options=[]){
-        foreach($this->_repositories as $repository){
+        foreach($this->_repositories as $k=>$repository){
             if($repository->allows($id)){
                 return($repository->set($id,$data));
             }
@@ -81,7 +81,7 @@ class LayerRepository extends BaseRepository
     public function setRepository($key,RepositoryInterface $repository=null,int $offset=null){
         if(is_array($key)){
             foreach($key as $k=>$r){
-                $this->set($k,$r);
+                $this->setRepository($k,$r);
             }
 
             return;

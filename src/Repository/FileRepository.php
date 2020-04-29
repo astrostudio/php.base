@@ -29,11 +29,11 @@ class FileRepository extends BaseRepository
             return(null);
         }
 
-        return(json_decode(file_get_contents($this->_path($id),true)));
+        return(json_decode(file_get_contents($this->_path($id),true),true));
     }
 
     public function set(string $id,$data=null,array $options=[]){
-        return(file_put_contents($this->_path($id),json_decode($data)));
+        return(file_put_contents($this->_path($id),json_encode($data)));
     }
 
     public function delete(string $id,array $options=[]){
