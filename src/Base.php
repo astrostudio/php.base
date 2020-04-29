@@ -11,6 +11,14 @@ class Base {
         }
     }
 
+    static public function consume(array &$data,$key){
+        $value=$data[$key]??null;
+
+        unset($data[$key]);
+
+        return($value);
+    }
+
 	static public function extend(array $data) {
 		$args=func_get_args();
 		$return=current($args);

@@ -3,7 +3,7 @@ namespace Base\Data;
 
 use Base\Data;
 
-class ProxyData extends Data
+class ProxyData extends BaseData
 {
     protected $_data;
 
@@ -26,5 +26,9 @@ class ProxyData extends Data
         }
 
         return($this->_data->save($data));
+    }
+
+    public function delete(){
+        return($this->_data?$this->_data->delete():false);
     }
 }
