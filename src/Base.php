@@ -200,7 +200,7 @@ class Base {
         $count=count($input);
         $offset=$offset??$count;
 
-        return(array_slice($input,0,$offset,true)+[$name=>$item]+array_slice($input,$offset,$count));
+        return(array_slice($input,0,$offset,true)+[$name=>$item]+array_slice($input,$offset,$count,true));
     }
 
     static public function cut(array $input=[],int $count=1):array
