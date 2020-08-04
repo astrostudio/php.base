@@ -86,7 +86,7 @@ class SVG extends XML {
     {
         $options['xlink:href']=$url;
 
-        return($this->element('a',$options,$content));
+        return(self::node('a',$options,$content));
     }
 
     static public function rgb(int $r,int $g,int $b)
@@ -104,56 +104,56 @@ class SVG extends XML {
         ]);
     }
 
-    static public function rectangle(int $x,int $y,int $width,int $height,array $options= []):string {
+    static public function rectangle(int $x,int $y,int $width,int $height,array $options= [],string $content=null):string {
         $options['x']=$x;
         $options['y']=$y;
         $options['width']=$width;
         $options['height']=$height;
 
-        return(self::simple('rect',$options));
+        return(self::node('rect',$options,$content));
     }
 
-    static public function circle(int $x,int $y,int $radius,array $options= []):string
+    static public function circle(int $x,int $y,int $radius,array $options= [],string $content=null):string
     {
         $options['cx']=$x;
         $options['cy']=$y;
         $options['r']=$radius;
 
-        return(self::simple('circle',$options));
+        return(self::node('circle',$options,$content));
     }
 
-    static public function ellipse(int $x,int $y,int $rx,int $ry,array $options= []):string
+    static public function ellipse(int $x,int $y,int $rx,int $ry,array $options= [],string $content=null):string
     {
         $options['cx']=$x;
         $options['cy']=$y;
         $options['rx']=$rx;
         $options['ry']=$ry;
 
-        return(self::simple('ellipse',$options));
+        return(self::node('ellipse',$options,$content));
     }
 
-    static public function line(int $x1,int $y1,int $x2,int $y2,array $options= []):string
+    static public function line(int $x1,int $y1,int $x2,int $y2,array $options= [],string $content=null):string
     {
         $options['x1']=$x1;
         $options['y1']=$y1;
         $options['x2']=$x2;
         $options['y2']=$y2;
 
-        return(self::simple('line',$options));
+        return(self::node('line',$options,$content));
     }
 
-    static public function polygon(array $points,array $options= []):string
+    static public function polygon(array $points,array $options= [],string $content=null):string
     {
         $options['points']=self::points($points);
 
-        return(self::simple('polygon',$options));
+        return(self::node('polygon',$options,$content));
     }
 
-    static public function polyline(array $points,array $options= []):string
+    static public function polyline(array $points,array $options= [],string $content=null):string
     {
         $options['points']=self::points($points);
 
-        return(self::simple('polyline',$options));
+        return(self::node('polyline',$options,$content));
     }
 
     public function text(int $x,int $y,string $text,array $options= []):string
@@ -183,17 +183,17 @@ class SVG extends XML {
         return($this->text($x,$y,$text,$options));
     }
 
-    static public function image(int $x,int $y,int $width,int $height,array $options= []):string
+    static public function image(int $x,int $y,int $width,int $height,array $options= [],string $content=null):string
     {
         $options['x']=$x;
         $options['y']=$y;
         $options['width']=$width;
         $options['height']=$height;
 
-        return(self::simple('image',$options));
+        return(self::node('image',$options,$content));
     }
 
-    static public function arc(int $x,int $y,int $r,float $start,float $stop,array $options= []):string
+    static public function arc(int $x,int $y,int $r,float $start,float $stop,array $options= [],string $content=null):string
     {
         $s=self::card($x,$y,$r,$start);
         $e=self::card($x,$y,$r,$stop);
@@ -209,10 +209,10 @@ class SVG extends XML {
 
         $options['d']=$d;
 
-        return(self::simple('path',$options));
+        return(self::node('path',$options,$content));
     }
 
-    static public function sector(int $x,int $y,int $r1,int $r2,float $start,float $stop,array $options= []):string
+    static public function sector(int $x,int $y,int $r1,int $r2,float $start,float $stop,array $options= [],string $content=null):string
     {
         if($r1<$r2) {
             $r=$r1;
@@ -236,7 +236,7 @@ class SVG extends XML {
 
         $options['d']=$d;
 
-        return(self::simple('path',$options));
+        return(self::node('path',$options,$content));
     }
 
     static public function points(array $points):string {
@@ -253,5 +253,9 @@ class SVG extends XML {
         }
 
         return($s);
+    }
+
+    static public function title(string $text,array $options=[]){
+        return(self::node('title',$options,$text));
     }
 }

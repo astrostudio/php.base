@@ -20,7 +20,7 @@ class XML {
     }
 
     static public function node(string $name,array $options= [],string $content=null):string{
-        return('<'.$name.self::options($options).$content.'</'.$name.'>');
+        return('<'.$name.self::options($options).'>'.($content??'').'</'.$name.'>');
     }
 
     private $stack= [];
