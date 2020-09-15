@@ -4,14 +4,22 @@ namespace Base\Repository;
 class FileRepository extends BaseRepository
 {
     protected $_dir;
+    protected $_ext;
 
     protected function _path(string $id):string
     {
-        return($this->_dir.DS.$id.'.json');
+        $path=$this->_dir.DS.$id;
+
+        if(!empty($this->_ext)){
+            $path.='.'.$this->_ext;
+        }
+
+        return($path);
     }
 
-    public function __construct(string $dir){
+    public function __construct(string $dir,string $ext='json'){
         $this->_dir=$dir;
+        $this->_ext=$ext;
     }
 
     public function allows(string $id):bool
