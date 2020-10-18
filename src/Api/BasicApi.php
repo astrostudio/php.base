@@ -16,7 +16,7 @@ class BasicApi extends BaseApi
 
     public function has(string $action):bool
     {
-        return(isset($this->actions[$action]));
+        return(isset($this->_actions[$action]));
     }
 
     public function execute(string $action,array $query=[]){
